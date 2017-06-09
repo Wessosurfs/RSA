@@ -1,0 +1,126 @@
+import java.lang.Math; // headers MUST be above the first class
+
+public class HelloWorld
+{
+  // arguments are passed using the text field below this editor
+  public static void main(String[] args)
+  {
+
+    RSA Encryption = new RSA();
+    System.out.println(Encryption.setValues(5,7));
+    System.out.println(Encryption.setN());
+    System.out.println(Encryption.sete(11));
+    System.out.println(Encryption.getN());
+  }
+}
+
+
+public class RSA
+{
+  //Declare variables
+  private int p;
+  private int q; 
+  private long e; 
+  private int N; 
+  private boolean primeSet = false;
+  private String eResult;
+  
+  public RSA(){
+    //Initialize
+    this.p = 0; 
+    this.q = 0; 
+    this.e = 0; 
+    this.N = 0; 
+  }
+  
+  public String setValues(int p1, int q1){
+    this.primeSet = false;
+    
+    if(!this.isPrime(p1))
+      return "P not prime.";
+    
+    if(!this.isPrime(q1))
+      return "Q not prime.";
+   	
+    this.p = p1;
+    this.q = q1;
+    this.primeSet = true;
+    return "The numbers are set.";
+  }
+  
+  
+  public String setN(){
+    if(!primeSet)
+      return "Values for p and q have not been set";
+    
+    this.N = this.p * this.q;
+    return "The value for N has been set.";
+    
+  }
+  
+  public String sete(long e){
+    if(isEValid(e)){
+      return this.eResult;
+    }
+  	
+    this.e = e;
+    return "The value for e has been set";
+  }
+  
+  public long getN(){
+    return this.N;
+  }
+  
+  private boolean isEValid(long e){
+    if(!isPrime(e)){
+      this.eResult =  "The Number is not Prime";
+      return false;
+    }
+    
+    long Number = (this.p -1)*(this.q-1); 
+    
+    if(e > Number){
+      this.eResult =  "e is greated than p-1*q-1";
+      return false;
+    }
+    
+    if(gdc(e,Number) == 1){
+      this.eResult = "the value for e is Set";
+      return true;
+    }else{
+      this.eResult = "The values are not relatively Prime";
+      return false;
+    }
+  }
+  
+  private long gdc(long a, long b){
+    	long temp; 
+    	
+    while(b!=0){
+      temp = a;
+      a = b;
+      b = temp%b;
+    }
+    
+    return a;
+  }
+  
+  private boolean isPrime(long number){
+    if(number<2 )
+      return false;
+    
+    if(number%2 ==0)
+      return false;
+    
+    if(number%3 ==0)
+      return false;
+    
+    for(long i=4L; i < number; i++){
+      if(i%number == 0)
+        return false;
+    }
+    
+    return true;
+  }
+  
+}
