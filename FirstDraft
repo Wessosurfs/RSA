@@ -11,6 +11,7 @@ public class HelloWorld
     System.out.println(Encryption.setN());
     System.out.println(Encryption.sete(11));
     System.out.println(Encryption.getN());
+    System.out.println(Encryption.EncryptMessage("Wes"));
   }
 }
 
@@ -24,6 +25,7 @@ public class RSA
   private int N; 
   private boolean primeSet = false;
   private String eResult;
+  private String Encryption;
   
   public RSA(){
     //Initialize
@@ -31,6 +33,7 @@ public class RSA
     this.q = 0; 
     this.e = 0; 
     this.N = 0; 
+    this.Encryption = "";
   }
   
   public String setValues(int p1, int q1){
@@ -70,6 +73,16 @@ public class RSA
   public long getN(){
     return this.N;
   }
+  
+  public int EncryptMessage(String Message){
+    return getAscii(Message.charAt(0));
+    
+  }
+  
+  private int getAscii(char character){
+    return (int) character;
+  }
+  
   
   private boolean isEValid(long e){
     if(!isPrime(e)){
