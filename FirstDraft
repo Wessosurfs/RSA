@@ -1,4 +1,5 @@
 import java.lang.Math; // headers MUST be above the first class
+import java.math.BigInteger;
 
 public class HelloWorld
 {
@@ -45,7 +46,7 @@ public class RSA
     
     if(!this.isPrime(q1))
       return "Q not prime.";
-   	
+    
     this.p = p1;
     this.q = q1;
     this.primeSet = true;
@@ -69,7 +70,7 @@ public class RSA
     if(!this.isValidE){
       return this.eResult;
     }
-  	
+    
     this.e = el;
     return "The value for e has been set";
   }
@@ -88,8 +89,8 @@ public class RSA
     int encodedchar = 0;
     
     for(int i =0; i<Message.length(); i++){
-      long temp = getAscii(Message.charAt(i));
-      Encrypt = String.valueOf(EncryptAnscii(temp));
+      int temp = getAscii(Message.charAt(i));
+      Encrypt += String.valueOf(EncryptAnscii(temp));
     }
     
     return Encrypt;
@@ -97,13 +98,13 @@ public class RSA
   }
   
   
-  private long EncryptAnscii(long ans){
+  private BigInteger EncryptAnscii(int ans){
     double a = (double) ans;
-    double b = (double) this.e;
-    Integer n = this.N;
+    Integer b = (int) this.e;
+    BigInteger n = new BigInteger(String.valueOf(this.N));
 
-   return (long) Math.pow(ans,b);
-    
+   return BigInteger.valueOf(ans).pow(b).mod(n);
+  
   }
   
   private int getAscii(char character){
@@ -134,8 +135,8 @@ public class RSA
   }
   
   private long gdc(long a, long b){
-    	long temp; 
-    	
+      long temp; 
+      
     while(b!=0){
       temp = a;
       a = b;
