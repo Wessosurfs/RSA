@@ -9,8 +9,9 @@ public class HelloWorld
     RSA Encryption = new RSA();
     System.out.println(Encryption.setValues(5,7));
     System.out.println(Encryption.setN());
-    System.out.println(Encryption.sete(11));
+    System.out.println(Encryption.sete((long) 11));
     System.out.println(Encryption.getN());
+     System.out.println(Encryption.getE());
     System.out.println(Encryption.EncryptMessage("Wes"));
   }
 }
@@ -26,7 +27,7 @@ public class RSA
   private boolean primeSet = false;
   private String eResult;
   private String Encryption;
-  
+  private boolean isValidE = false;
   public RSA(){
     //Initialize
     this.p = 0; 
@@ -61,12 +62,15 @@ public class RSA
     
   }
   
-  public String sete(long e){
-    if(isEValid(e)){
+  public String sete(long el){
+    
+      isEValid(el);
+
+    if(!this.isValidE){
       return this.eResult;
     }
   	
-    this.e = e;
+    this.e = el;
     return "The value for e has been set";
   }
   
@@ -74,8 +78,31 @@ public class RSA
     return this.N;
   }
   
-  public int EncryptMessage(String Message){
-    return getAscii(Message.charAt(0));
+    public long getE(){
+    return this.e;
+  }
+  
+  public String EncryptMessage(String Message){
+    
+    String Encrypt=""; 
+    int encodedchar = 0;
+    
+    for(int i =0; i<Message.length(); i++){
+      long temp = getAscii(Message.charAt(i));
+      Encrypt = String.valueOf(EncryptAnscii(temp));
+    }
+    
+    return Encrypt;
+    
+  }
+  
+  
+  private long EncryptAnscii(long ans){
+    double a = (double) ans;
+    double b = (double) this.e;
+    Integer n = this.N;
+
+   return (long) Math.pow(ans,b);
     
   }
   
@@ -84,25 +111,25 @@ public class RSA
   }
   
   
-  private boolean isEValid(long e){
+  private void isEValid(long e){
     if(!isPrime(e)){
       this.eResult =  "The Number is not Prime";
-      return false;
+      this.isValidE = false;
     }
     
     long Number = (this.p -1)*(this.q-1); 
     
     if(e > Number){
       this.eResult =  "e is greated than p-1*q-1";
-      return false;
+      this.isValidE = false;
     }
     
     if(gdc(e,Number) == 1){
       this.eResult = "the value for e is Set";
-      return true;
+      this.isValidE = true;
     }else{
       this.eResult = "The values are not relatively Prime";
-      return false;
+      this.isValidE  = false;
     }
   }
   
